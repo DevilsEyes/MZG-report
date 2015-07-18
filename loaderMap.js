@@ -3,7 +3,7 @@
  */
 
 require.config({
-    baseUrl: '/MZG report/',
+    baseUrl: '/report/',
     paths: {
         jquery: 'vendor/jquery/jquery.min.js',
         //avalon: "vendor/avalon/avalon",
