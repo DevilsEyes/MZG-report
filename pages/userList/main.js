@@ -1,45 +1,91 @@
 /**
  * Created by nic on 2015/6/10.
  */
-define(["avalon",'mmRouter', "text!/template/userList.html","SysConfig",'SysUtil'], function(avalon,router, userList,SysConfig,SysUtil) {
+define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysUtil'], function (avalon, router, userList, SysConfig, SysUtil) {
     avalon.templateCache.userList = userList;
 
     avalon.vmodels.root.menus.push({
-            title: "用户列表",
-            url: "#!/userList/"
-        });
+        title: "用户列表",
+        url: "#!/userList/"
+    });
 
-    var limit = 20;
+    var by = function (name,s)
+    {
+        return function (o, p) {
+            var a, b;
+            if (typeof(o) === "object" && typeof(p) === "object" && o && p) {
+                a = o[name];
+                b = p[name];
+                if (a === b) {
+                    return 0;
+                }
+                if (typeof(a) === typeof(b)) {
+                    if(s==='0'){
+                        return a < b? -1 : 1;
+                    }else{
+                        return a < b? 1 : -1;
+                    }
+                }
+                if(s==='0'){
+                    return typeof(a) < typeof(b)? -1 : 1;
+                }
+                else{
+                    return typeof(a) < typeof(b)? 1 : -1;
+                }
+            }
+            else {
+                throw("error");
+            }
+        }
+    };
 
     //exports.userList= model = avalon.define({
     model = avalon.define({
         $id: "userList",
         sort: "",
-        totalNum:0,
-        sectorF:0,
-        androidNum:0,
-        iosNum:0,
+        totalNum: 0,
+        sectorF: 0,
+        androidNum: 0,
+        iosNum: 0,
+        page: 1,
+        limit: 20,
+
+        mySort:'storeId',
+        mySortF:'1',
+
         fields: [{
             name: "#"
         },
             {name: "店名"},
-            {name: "作品数",
-            sort: "product"},
-            {name: "服务数",
-            sort: "commodity"},
-            {name: "客户数",
-            sort: "customer"},
-            {name: "预约数",
-            sort: "orderNum"},
-            {name: "访问量",
-            sort: "count"}, {name: "行业"}, {name: "版本"}, {name: "平台"},
-            {name: "注册时间",
-            sort: "time"},
-            {name:'机型'},
-            {name:'最后'},
-            {name:'手机'}
+            {
+                name: "作品数",
+                sort: "product"
+            },
+            {
+                name: "服务数",
+                sort: "commodity"
+            },
+            {
+                name: "客户数",
+                sort: "customer"
+            },
+            {
+                name: "预约数",
+                sort: "orderNum"
+            },
+            {
+                name: "访问量",
+                sort: "count"
+            }, {name: "行业"}, {name: "版本"}, {name: "平台"},
+            {
+                name: "注册时间",
+                sort: "time"
+            },
+            {name: '机型'},
+            {name: '最后'},
+            {name: '手机'}
         ],
-        wholeDatas:[],
+        wholeDatas: [],
         datas: [],
         sector: {
             0: "爱好",
@@ -82,12 +128,12 @@ define(["avalon",'mmRouter', "text!/template/userList.html","SysConfig",'SysUtil
             //    model.sort = sort;
             //else
             //    return;
-            if(typeof (sort) =='string')model.sort = sort;
+            if (typeof (sort) == 'string')model.sort = sort;
             var formData = {order: [model.sort]};
             formData[model.sort] = {order: -1};
-            if(model.sectorF!='0')formData['sector']=model.sectorF;
+            if (model.sectorF != '0')formData['sector'] = model.sectorF;
             $.jsonp({
-                url: SysConfig.ApiUrl+"V1.0.0/Admin/Report/storeList",
+                url: SysConfig.ApiUrl + "V1.0.0/Admin/Report/storeList",
                 callbackParameter: "callback",
                 data: formData,
                 success: function (data) {
@@ -95,14 +141,15 @@ define(["avalon",'mmRouter', "text!/template/userList.html","SysConfig",'SysUtil
                     SysUtil.ApiCallback(data);
                     if (data.code != 0)
                         return alert(data.msg);
-                    model.androidNum =0;
+                    model.androidNum = 0;
                     model.iosNum = 0;
-                    data.data.list.forEach(function(item){
-                        if(item.platform==1)model.iosNum++;
+                    data.data.list.forEach(function (item) {
+                        if (item.platform == 1)model.iosNum++;
                         else model.androidNum++;
                     });
-                    model.wholeDatas = data.data.list;
-                    model.datas = model.wholeDatas.slice(0,20);
+                    //window.wholeDatas = data.data.list;
+                    model.datas = data.data.list;
+                    //model.datas = model.wholeDatas.slice(model.limit*model.page,model.limit*(model.page+1));
                 }
             });
 
@@ -110,8 +157,19 @@ define(["avalon",'mmRouter', "text!/template/userList.html","SysConfig",'SysUtil
         }
 
     });
+    model.$watch("page", function (a) {
+        avalon.scan(document);
+    });
 
-    avalon.router.get("/userList/", function(){
+    model.$watch("mySort",mySort);
+    model.$watch("mySortF",mySort);
+    function mySort(a) {
+        model.datas.sort(by(model.mySort,model.mySortF));
+        //model.datas = model.wholeDatas;
+        avalon.scan(document);
+    }
+
+    avalon.router.get("/userList/", function () {
         avalon.vmodels.root.bodyPage = "userList";
         model.getReports('time');
     });

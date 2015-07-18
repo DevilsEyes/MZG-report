@@ -1,26 +1,58 @@
 <h1 class="page-header">报表</h1>
 <div ms-controller="userList">
-    筛选<select ms-duplex="sectorF">
-    <option value="0" selected>全部</option>
-    <option value="10">美甲</option>
-    <option value="20">美发</option>
-    <option value="30">纹身</option>
-    <option value="40">摄影</option>
-    <option value="50">美容</option>
-</select>
-    总数：<input disabled="false" type="text" ms-attr-value="{{datas.size()}}"/>
-    <input type="button" value="刷新" ms-click="getReports"/>
-    <br/>安卓:<input disabled="false" type="text" ms-duplex="androidNum"/>iOS:<input disabled="false" type="text" ms-duplex="iosNum"/>
-    <br/>
+
+    <div class="form-inline">
+
+        <div class="input-group">
+            <label class="input-group-addon">筛选</label>
+            <select class="form-control" ms-duplex="sectorF">
+                <option value="0" selected>全部</option>
+                <option value="10">美甲</option>
+                <option value="20">美发</option>
+                <option value="30">纹身</option>
+                <option value="40">摄影</option>
+                <option value="50">美容</option>
+            </select>
+        </div>
+        <input type="button" value="刷新" class="btn btn-default" ms-click="getReports"/>
+        <br/>
+        <br/>
+
+        <div class="input-group">
+            <label class="input-group-addon">排序</label>
+            <select class="form-control" ms-duplex="mySort">
+                <option value="storeId" selected>id</option>
+                <option value="productNum">作品数</option>
+                <option value="commodityNum">服务数</option>
+                <option value="customerNum">客户数</option>
+                <option value="orderNum">预约数</option>
+                <option value="visitCount">访问量</option>
+                <option value="createdTime">注册时间</option>
+            </select>
+            <select class="form-control" ms-duplex="mySortF">
+                <option value="1" selected>降序</option>
+                <option value="0">升序</option>
+            </select>
+        </div>
+        <br/>
+        <br/>
+
+        <span>总数：</span><span>{{datas.size()}}</span>
+        <br/>安卓：<span>{{androidNum}}</span> | iOS：<span>{{iosNum}}</span>
+        <br/><br/>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th class="store_field_tab" ms-repeat="fields" ms-class-sort="el.sort === sort" ms-click="getReports(el.sort)">{{el.name}}</th>
+            <th class="store_field_tab" ms-repeat="fields" ms-class-sort="el.sort === sort"
+                ms-click="getReports(el.sort)">{{el.name}}
+            </th>
         </tr>
         </thead>
         <tbody>
-        <tr ms-repeat-row="datas">
-            <td ><a target='_blank' ms-attr-href="http://www.meizhanggui.cc/store/{{row.storeId}}">{{row.storeId}}</a></td>
+        <tr ms-repeat-row="datas" ms-if-loop="$index >= (page-1)*limit && $index <= limit*page">
+            <td><a target='_blank' ms-attr-href="http://www.meizhanggui.cc/store/{{row.storeId}}">{{row.storeId}}</a>
+            </td>
             <td><a ms-attr-href="#!/userInfo/{{row.storeId}}">{{row.storeName}}</a></td>
             <td>{{row.productNum}}</td>
             <td>{{row.commodityNum}}</td>
@@ -30,12 +62,13 @@
             <td>{{sector[row.sector]}}</td>
             <td>{{row.version}}</td>
             <td>{{platform[row.platform]+" ("+row.machineType+")"}}</td>
-            <td>{{row.createdTime|date("yy-MM-dd  HH:mm"}}</td>
+            <td>{{row.createdTime|date("yy-MM-dd HH:mm"}}</td>
             <td>{{row.machineType}}</td>
-            <td>{{row.latestLoginTime|date("yy-MM-dd  HH:mm"}}</td>
+            <td>{{row.latestLoginTime|date("yy-MM-dd HH:mm"}}</td>
             <td>{{row.phonenum}}</td>
 
         </tr>
         </tbody>
     </table>
+    第<input type="text" ms-duplex="page"/>页
 </div>

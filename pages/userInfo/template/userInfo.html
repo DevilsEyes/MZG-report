@@ -1,23 +1,124 @@
 <h1 class="page-header">用户信息</h1>
 <div ms-controller="userInfo">
-    用户Id：<input type="text" ms-duplex="storeId"/>手机号：<input type="text" ms-duplex="phonenum"/><input type="button" ms-click="getInfo" value="搜索"/>
-    <select ms-duplex="sector">
-        <option value="0">爱好</option>
-        <option value="10">美甲</option>
-        <option value="20">美发</option>
-        <option value="30">纹身</option>
-        <option value="40">摄影</option>
-        <option value="50">美容</option>
-    </select>
-    <input type="button" ms-click="ChangeSector" value="修改行业"/>
-    <select ms-duplex="role">
-        <option value="0">用户</option>
-        <option value="110">普通管理员</option>
-        <option value="120">超级管理员</option>
-    </select>
-    <input type="button" ms-click="ChangeRole" value="修改权限"/>
-    <br/>
-    <div>
-        {{storeInfo|html}}
+
+    <div class="form-inline">
+        <div class="input-group">
+            <label class="input-group-addon">用户Id</label>
+            <input type="text" class="form-control" ms-duplex="storeId">
+        </div>
+
+        <div class="input-group">
+            <label class="input-group-addon">手机号</label>
+            <input type="text" class="form-control" ms-duplex="phonenum">
+        </div>
+
+        <input class="btn btn-primary" type="button" ms-click="getInfo" value="搜索"/>
+        <br/>
+        <hr/>
+        <br/>
+    </div>
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">头像</label>
+
+            <div class="col-sm-10" ms-if="userInfo.avatar.length > 0 ">
+                <img class="cimg-circle" ms-src="{{userInfo.avatar + '?imageView2/2/w/80/h/80'}}"/>
+            </div>
+            <p class="col-sm-10 form-control-static" ms-if="userInfo.avatar.length == 0 ">无</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">ID</label>
+
+            <p class="col-sm-10 form-control-static"><a target='_blank' ms-attr-href="http://www.meizhanggui.cc/store/{{userInfo.userId}}">{{userInfo.userId}}</a></p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户名</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.nickname}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">手机</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.phonenum}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">生日</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.birthYear + '.' + userInfo.birthMonth + '.' + userInfo.birthDay|f$null}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">性别</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.gender|f$gender}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">简介</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.faith|f$null}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">账号状态</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.banned|f$banned}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">微信号</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.wxNum|f$null}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">openId(微信)</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.wxOpenId|f$null}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">权限</label>
+            <select class="col-sm-7 form-control" style="width:200px;margin-right:10px;" ms-duplex="role">
+                <option value="0">普通用户</option>
+                <option value="110">普通管理员</option>
+                <option value="120">超级管理员</option>
+            </select>
+            <input class="btn btn-warning" type="button" ms-click="ChangeRole" value="修改权限"/>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">行业</label>
+            <select class="col-sm-7 form-control" style="width:200px;margin-right:10px;" ms-duplex="sector">
+                <option value="0">爱好</option>
+                <option value="10">美甲</option>
+                <option value="20">美发</option>
+                <option value="30">纹身</option>
+                <option value="40">摄影</option>
+                <option value="50">美容</option>
+            </select>
+            <input class="btn btn-default" type="button" ms-click="ChangeSector" value="修改行业"/>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">店铺地址</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.company.address|f$null}}</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">店铺名称</label>
+
+            <p class="col-sm-10 form-control-static">{{userInfo.company.name|f$null}}</p>
+        </div>
+
+
+        <!--{{storeInfo|html}}-->
     </div>
 </div>

@@ -9,6 +9,43 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
             url: "#!/userInfo/"
         });
 
+    avalon.filters.f$gender = function(str){
+        if(str == '1'){
+            return '男';
+        }else if(str == '0'){
+            return '女';
+        }else{
+            return '未知';
+        }
+    };
+    avalon.filters.f$null = function(str){
+        if(str == null||str == '0.1.1'||str==''){
+            return '无';
+        }
+        else{
+            return str;
+        }
+    };
+    avalon.filters.f$role = function(str){
+        if(str == '120'){
+            return '超级管理员';
+        }else if(str == '110'){
+            return '普通管理员';
+        }else{
+            return '普通用户';
+        }
+    };
+    avalon.filters.f$banned = function(str){
+        if(str == '2'){
+            return '永久封号';
+        }else if(str == '1'){
+            return '封号七天';
+        }else{
+            return '正常';
+        }
+    };
+
+
     //exports.userList= model = avalon.define({
     var model = avalon.define({
         $id: "userInfo",
@@ -18,6 +55,7 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
         sector:'',
         role:'',
         storeInfo:'',
+        userInfo:{},
         getInfo: function () {
             var formData = {};
             if(model.storeId.length>0)
@@ -32,9 +70,17 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
                     var data = JSON.parse(data);
                     SysUtil.ApiCallback(data);
                     if (data.code != 0)
-                        return alert(data.msg);
+                    {return alert(data.msg);}
 
                     var userInfo = data.data.storeInfo,str="";
+
+                    model.userInfo = userInfo.userInfo;
+                    //model.userInfo = $.extend({},userInfo,userInfo.userInfo);
+                    model.userInfo.company_name = userInfo.userInfo.company.name;
+                    model.userInfo.company_address = userInfo.userInfo.company.address;
+
+                    console.dir(model.userInfo);
+
                     model.sector = userInfo.sector;
                     model.phonenum = userInfo.userInfo.phonenum;
                     model.role = userInfo.userInfo.role;

@@ -15,6 +15,7 @@ require.config({
         SysUtil: 'config/SysUtil.js',
         SysValue: 'config/SysValue.js',
         jsonp: 'vendor/jsonp/jsonp.js',
+        flatui: 'vendor/flat-ui/flat-ui.min.js',
         //loaderMap: './lib/loaderMap.js',
         userList: 'pages/userList/main.js',
         login: 'pages/login/main.js',
@@ -39,10 +40,10 @@ require(['avalon',
     'login?20150716',
     'userInfo?20150716',
     'message?20150716',
-    'main?20150619'], function(avalon,mmRouter,userList,login,index){
+    'main?20150619'], function (avalon, mmRouter, userList, login, index) {
 
-    avalon.router.error(function(){
-        require(["text!./static/template/404.html"], function(not_found) {
+    avalon.router.error(function () {
+        require(["text!./static/template/404.html"], function (not_found) {
             avalon.templateCache.not_found = not_found;
             avalon.vmodels.root.bodyPage = "not_found";
         });
@@ -52,6 +53,6 @@ require(['avalon',
     });
     avalon.scan(document.body);
 });
-    //});
+//});
 
 
