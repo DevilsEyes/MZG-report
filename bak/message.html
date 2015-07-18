@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jsonp.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    function SendMessage()
+    {
+        var formData = {};
+        if($('#sector').val()!=0)formData['sector']=$('#sector').val();
+        if($('#platform').val()!=-1)formData['platform']=$('#platform').val();
+        formData['content'] = $('#content').val();
+        formData['url'] = $('#url').val();
+        if(formData['content']==''||formData['url']=='')return alert('消息不能为空');
+        $.jsonp({
+        url: "http://api.meizhanggui.cc/V1.0.0/Admin/messageList?_method=PUT",
+//            url: "http://192.168.2.3/V1.0.0/Admin/messageList?_method=PUT",
+//			url: "http://123.57.42.13/V1.0.0/Admin/messageList?_method=PUT",
+            callbackParameter:"callback",
+            data:formData,
+            success:function(data){
+                var data=eval('('+data+')');
+                if(data.code!=0)
+                    return alert(data.msg);
+                else
+                {
+                    $('#content2').val($('#content').val());
+                    $('#url2').val($('#url').val());
+                    $('#content').val('');
+                    $('#url').val('');
+                    return alert('成功：'+data.data['count']+'个');
+                }
+            }
+        });
+    }
+
+</script>
+群组<select id="sector" >
+    <option value ="0">全部人</option>
+    <option value ="10">美甲</option>
+    <option value="20">美发</option>
+    <option value="30">纹身</option>
+    <option value="40">摄影</option>
+    <option value="50">美容</option>
+</select>
+手机系统<select id="platform" >
+    <option value ="-1">全部人</option>
+    <option value ="0">安卓</option>
+    <option value="1">苹果</option>
+</select>
+<br/>
+<br/>
+<!--标题<input type="text" id="title" style="width:400px;"/><br/>-->
+内容<textarea id="content" multiple='true' style="width:400px;height:400px;"></textarea><br/>
+跳转链接<input type="text" id="url" style="width:400px;" /><br/>
+<br/>
+<input type="button" value="发送通知" onclick="SendMessage()"/>
+<br/>
+<br/>
+<br/>
+<div style="border: 3px;">
+    成功发送：<br/>
+    内容<textarea id="content2" multiple='true' disabled="true" style="width:400px;height:100px;"></textarea><br/>
+    跳转链接<input type="text" id="url2" style="width:400px;" disabled="true" /><br/>
+</div>
+</body>
+</html>

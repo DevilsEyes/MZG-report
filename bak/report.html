@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jsonp.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    function Sector(sector)
+    {
+        switch (sector)
+        {
+            case 10:return '美甲';
+            case 20:return '美发';
+            case 30:return '纹身';
+            case 40:return '摄影';
+            case 50:return '美容';
+        }
+        return '异常';
+    }
+function GetData(order)
+{
+    if(!order)
+    {
+        $("#datable tr:gt(0)").remove();
+        return setTimeout(function(){GetData(order = $("#order").val())},400);
+    }
+    var formData = {order:[order]};
+    formData[order]={order:-1};
+	if($("#sector").val()!='0')formData['sector']=$("#sector").val();
+    var ios = 0,android = 0;
+
+    $.jsonp({
+        url: "http://api.meizhanggui.cc/V1.0.0/Admin/Report/storeList",
+//        url: "http://123.57.42.13/V1.0.0/Admin/Report/storeList",
+        callbackParameter:"callback",
+        data:formData,
+        success:function(data){
+            var data=eval('('+data+')'),ids="";
+            if(data.code!=0)
+                return alert(data.msg);
+            var count = 0,countFn={
+                'time':function(row){
+                    count++;
+                    if(row['platform']==1)ios++;else android++;
+                },
+                'product':function(row){
+                    if(row['productNum'])count+=row['productNum'];
+                    if(row['platform']==1)ios+=row['productNum'];else android+=row['productNum'];
+                },
+                'commodity':function(row){
+                    if(row['commodityNum'])count+=parseInt(row['commodityNum']);
+                    if(row['platform']==1)ios+=row['commodityNum'];else android+=row['commodityNum'];
+                },
+                'customer':function(row){
+                    if(row['customerNum'])count+=parseInt(row['customerNum']);
+                    if(row['platform']==1)ios+=row['customerNum'];else android+=row['customerNum'];
+                },
+                'count':function(row){
+                    if(row['visitCount'])count+=parseInt(row['visitCount']);
+                    if(row['platform']==1)ios+=row['visitCount'];else android+=row['visitCount'];
+                },
+                'orderNum':function(row){
+                    if(row['orderNum'])count+=parseInt(row['orderNum']);
+                    if(row['platform']==1)ios+=row['orderNum'];else android+=row['orderNum'];
+                }
+            };
+            $("#datable tr:gt(0)").remove();
+            data.data.list.forEach(function(row){
+				if(row['sector']==30)ids+=','+row['storeId'];
+                countFn[order](row);
+                var time = new Date(),time2 = new Date();
+                time.setTime(row['createdTime']);
+                time2.setTime(row['latestLoginTime']);
+                var trHTML = "<tr><td><a target='_blank' href='http://www.meizhanggui.cc/store/"+row['storeId']+"'>"+row['storeId']+
+                        "</a></td><td>"+row['storeName']+
+                        "</td><td>"+row['productNum']+
+                        "</td><td>"+row['commodityNum']+
+                        "</td><td>"+row['customerNum']+
+                        "</td><td>"+row['orderNum']+
+                        "</td><td>"+time.toLocaleString()+
+                        "</td><td>"+row['visitCount']+"</td>"+
+                        "</td><td>"+Sector(row['sector'])+"</td>"+
+                        "</td><td>"+(row['platform']==1?'苹果':"安卓")+"</td>"+
+                        "</td><td>"+row['version']+"</td>"+
+                        "</td><td>"+row['machineType']+"</td>"+
+                        "</td><td>"+time2.toLocaleString()+"</td>"+
+                        "</td><td>"+row['phonenum']+"</td></tr>";
+                $("#datable").append(trHTML);
+            });
+            $('#totalNum').val(count);
+            $('#androidNum').val(android);
+            $('#iosNum').val(ios);
+            $('#ids').val(ids);
+        }
+    });
+}
+
+function GetCaptcha()
+{
+    $('#captcha').val('');
+    $.jsonp({
+        url: "http://api.meizhanggui.cc/V1.0.0/Admin/captcha",
+        callbackParameter:"callback",
+        data:{
+            phonenum:$('#phonenum').val()
+        },
+        success:function(data){
+            var data=eval('('+data+')');
+            if(data.code!=0)
+                alert(data.msg);
+            else
+            {
+                $('#captcha').val(data.data.captcha);
+            }
+        }
+    });
+}
+
+</script>
+获取验证码  手机号:<input id="phonenum" type="text"/><input type="button" value="获取" onclick="GetCaptcha()"/><input type="text" disabled="false" id="captcha"/>
+<br/>
+排序<select id="order" onchange="GetData(this.value)">
+    <option value ="time">注册时间</option>
+    <option value ="product">作品数量</option>
+    <option value="commodity">服务数量</option>
+    <option value="customer">顾客数量</option>
+    <option value="count">访问量</option>
+    <option value="orderNum">预约量</option>
+</select>筛选<select id="sector">
+    <option value="0" selected>全部</option>
+    <option value="10">美甲</option>
+    <option value="20">美发</option>
+    <option value="30">纹身</option>
+    <option value="40">摄影</option>
+    <option value="50">美容</option>
+</select>
+总数：<input disabled="false" type="text" id="totalNum"/>
+<input type="button" value="刷新" onclick="GetData()"/>
+<br/>安卓:<input disabled="false" type="text" id="androidNum"/>iOS:<input disabled="false" type="text" id="iosNum"/>
+<br/>
+<table id="datable" border="1px">
+    <tr><th>id</th><th>店名</th><th>作品数</th><th>服务数</th><th>客户数</th><th>预约数</th><th>注册时间</th><th>访问量</th><th>行业</th><th>平台</th><th>版本</th><th>机型</th><th>最后</th><th>手机</th></tr>
+</table>
+<br/>
+<input disabled="false" type="text" id="ids"/>
+
+<script type="text/javascript">
+    GetData('time');
+</script>
+</body>
+</html>

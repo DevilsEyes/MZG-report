@@ -1,0 +1,31 @@
+<h1 class="page-header">报表</h1>
+<div ms-controller="message">
+    群组<select ms-duplex="sector" >
+    <option value ="0">全部人</option>
+    <option value ="10">美甲</option>
+    <option value="20">美发</option>
+    <option value="30">纹身</option>
+    <option value="40">摄影</option>
+    <option value="50">美容</option>
+</select>
+    手机系统<select ms-duplex="platform" >
+    <option value ="-1">全部人</option>
+    <option value ="0">安卓</option>
+    <option value="1">苹果</option>
+</select>
+    <br/>
+    <br/>
+    <!--标题<input type="text" id="title" style="width:400px;"/><br/>-->
+    内容<textarea multiple='true' ms-duplex="content" style="width:400px;height:400px;"></textarea><br/>
+    跳转链接<input type="text" ms-duplex="url" style="width:400px;" /><br/>
+    <br/>
+    <input type="button" value="发送通知" ms-click="send"/>
+    <br/>
+    <br/>
+    <br/>
+    <div style="border: 3px;">
+        成功发送：<br/>
+        内容<textarea ms-duplex="content2" multiple='true' disabled="true" style="width:400px;height:100px;"></textarea><br/>
+        跳转链接<input type="text" ms-duplex="url2" style="width:400px;" disabled="true" /><br/>
+    </div>
+</div>

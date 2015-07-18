@@ -1,0 +1,41 @@
+<h1 class="page-header">报表</h1>
+<div ms-controller="userList">
+    筛选<select ms-duplex="sectorF">
+    <option value="0" selected>全部</option>
+    <option value="10">美甲</option>
+    <option value="20">美发</option>
+    <option value="30">纹身</option>
+    <option value="40">摄影</option>
+    <option value="50">美容</option>
+</select>
+    总数：<input disabled="false" type="text" ms-attr-value="{{datas.size()}}"/>
+    <input type="button" value="刷新" ms-click="getReports"/>
+    <br/>安卓:<input disabled="false" type="text" ms-duplex="androidNum"/>iOS:<input disabled="false" type="text" ms-duplex="iosNum"/>
+    <br/>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="store_field_tab" ms-repeat="fields" ms-class-sort="el.sort === sort" ms-click="getReports(el.sort)">{{el.name}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ms-repeat-row="datas">
+            <td ><a target='_blank' ms-attr-href="http://www.meizhanggui.cc/store/{{row.storeId}}">{{row.storeId}}</a></td>
+            <td><a ms-attr-href="#!/userInfo/{{row.storeId}}">{{row.storeName}}</a></td>
+            <td>{{row.productNum}}</td>
+            <td>{{row.commodityNum}}</td>
+            <td>{{row.customerNum}}</td>
+            <td>{{row.orderNum}}</td>
+            <td>{{row.visitCount}}</td>
+            <td>{{sector[row.sector]}}</td>
+            <td>{{row.version}}</td>
+            <td>{{platform[row.platform]+" ("+row.machineType+")"}}</td>
+            <td>{{row.createdTime|date("yy-MM-dd  HH:mm"}}</td>
+            <td>{{row.machineType}}</td>
+            <td>{{row.latestLoginTime|date("yy-MM-dd  HH:mm"}}</td>
+            <td>{{row.phonenum}}</td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>

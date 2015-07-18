@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <title>avalon • TodoMVC</title>
+    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="./vendor/jsonp/jsonp.js"></script>
+    <!--<script src="vendor/require/require.js" data-main="main.js"></script>-->
+    <!--<script src="vendor/avalon/avalon-full.js?v1.0.2" data-main="main.js?20150618"></script>-->
+    <script >
+        $('head').append("<script src='vendor/avalon/avalon-full.js?v1.0.2' data-main='loaderMap.js?"+new Date().getTime()+"'/>");
+    </script>
+    <style>
+        .ms-controller{
+                     visibility: hidden;
+                 }
+    </style>
+    <link href="./static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./static/css/dashboard.css" rel="stylesheet">
+</head>
+<body >
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">美掌柜CMS</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid ms-controller" ms-controller="root">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" ms-visible="logined">
+                <li ms-repeat-menu_row="menus"><a ms-attr-href="menu_row.url">{{menu_row.title}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ms-include-src="bodyPage"></div>
+    </div>
+</div>
+</body>
+</html>

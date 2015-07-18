@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jsonp.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    function GetInfo()
+    {
+        var formData = {};
+        if($('#userId').val().length>0)
+        formData['storeId'] = $('#userId').val();
+        else formData['phonenum'] = $('#phonenum').val();
+        formData['full'] = true;
+        $.jsonp({
+        url: "http://api.meizhanggui.cc/V1.0.0/Store/info",
+//            url: "http://123.57.42.13/V1.0.0/Store/info",
+//            url: "http://192.168.2.3/V1.0.0/Store/info",
+            callbackParameter:"callback",
+            data:formData,
+            success:function(data){
+                var data=eval('('+data+')');
+                if(data.code!=0)
+                    return alert(data.msg);
+                else
+                {
+                    var userInfo = data.data.storeInfo,str="";
+                    for(var i in userInfo)
+                    {
+                        if(typeof userInfo[i]=='object')
+                        {
+                            for(var j in userInfo[i])
+                            str+=j+': '+userInfo[i][j]+'<br/>';
+                        }
+                        else
+                            str+=i+': '+userInfo[i]+'<br/>';
+                    }
+                    document.getElementById('info').innerHTML=str;
+                    document.getElementById('sector').selectedIndex = userInfo['sector']/10 -1;
+                    document.getElementById('role').selectedIndex = userInfo.userInfo['role']==0?0:(userInfo.userInfo['role']==110?1:2);
+                }
+            }
+        });
+    }
+    function ChangeSector()
+    {
+        var formData = {};
+        formData['userId'] = $('#userId').val();
+        formData['sector'] = $('#sector').val();
+        $.jsonp({
+        url: "http://api.meizhanggui.cc/V1.0.0/Admin/userInfo?_method=POST",
+//            url: "http://123.57.42.13/V1.0.0/Admin/userInfo?_method=POST",
+//            url: "http://192.168.2.3/V1.0.0/Admin/userInfo?_method=POST",
+            callbackParameter:"callback",
+            data:formData,
+            success:function(data){
+                var data=eval('('+data+')');
+                if(data.code!=0)
+                    return alert(data.msg);
+                else return alert('修改成功');
+            }
+        });
+    }
+    function ChangeRole()
+    {
+        var formData = {};
+        formData['userId'] = $('#userId').val();
+        formData['role'] = $('#role').val();
+        $.jsonp({
+        url: "http://api.meizhanggui.cc/V1.0.0/Admin/userInfo?_method=POST",
+//            url: "http://123.57.42.13/V1.0.0/Admin/userInfo?_method=POST",
+//            url: "http://192.168.2.3/V1.0.0/Admin/userInfo?_method=POST",
+            callbackParameter:"callback",
+            data:formData,
+            success:function(data){
+                var data=eval('('+data+')');
+                if(data.code!=0)
+                    return alert(data.msg);
+                else return alert('修改成功');
+            }
+        });
+    }
+</script>
+用户Id：<input type="text" id="userId"/>手机号：<input type="text" id="phonenum"/><input type="button" onclick="GetInfo()" value="搜索"/>
+<select id="sector">
+    <option value="10">美甲</option>
+    <option value="20">美发</option>
+    <option value="30">纹身</option>
+    <option value="40">摄影</option>
+    <option value="50">美容</option>
+</select>
+<input type="button" onclick="ChangeSector()" value="修改行业"/>
+<select id="role">
+    <option value="0">用户</option>
+    <option value="110">普通管理员</option>
+    <option value="120">超级管理员</option>
+</select>
+<input type="button" onclick="ChangeRole()" value="修改权限"/>
+<br/>
+<div id="info">
+
+</div>
+</body>
+</html>

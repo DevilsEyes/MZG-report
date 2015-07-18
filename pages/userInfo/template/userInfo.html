@@ -1,0 +1,23 @@
+<h1 class="page-header">用户信息</h1>
+<div ms-controller="userInfo">
+    用户Id：<input type="text" ms-duplex="storeId"/>手机号：<input type="text" ms-duplex="phonenum"/><input type="button" ms-click="getInfo" value="搜索"/>
+    <select ms-duplex="sector">
+        <option value="0">爱好</option>
+        <option value="10">美甲</option>
+        <option value="20">美发</option>
+        <option value="30">纹身</option>
+        <option value="40">摄影</option>
+        <option value="50">美容</option>
+    </select>
+    <input type="button" ms-click="ChangeSector" value="修改行业"/>
+    <select ms-duplex="role">
+        <option value="0">用户</option>
+        <option value="110">普通管理员</option>
+        <option value="120">超级管理员</option>
+    </select>
+    <input type="button" ms-click="ChangeRole" value="修改权限"/>
+    <br/>
+    <div>
+        {{storeInfo|html}}
+    </div>
+</div>

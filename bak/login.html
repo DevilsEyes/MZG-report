@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jsonp.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+
+    function login(){
+        $.jsonp({
+            url: "http://api.meizhanggui.cc/V1.0.0/Admin/login?_method=POST",
+//            url: "http://123.57.42.13/V1.0.0/Admin/login?_method=POST",
+            callbackParameter:"callback",
+            data:{
+                phonenum:$("#account").val(),
+                password:$("#password").val()
+            },
+            success:function(data){
+                var data=eval('('+data+')');
+                if(data.code!=0)
+                    alert(data.msg);
+                else
+                {
+                    location.href = 'main.html';
+                }
+            }
+        });
+    }
+
+</script>
+账号：<input id="account" type="text"/>
+<br/>密码：<input id="password" type="password"/>
+<br/>
+<input type="button" value="登录" onclick="login()"/>
+</body>
+</html>
