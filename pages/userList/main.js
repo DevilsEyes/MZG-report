@@ -175,10 +175,10 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
         avalon.scan(document);
     }
 
-    //model.$watch("search",w$Search);
+    model.$watch("search",w$Search);
 
 
-    setInterval(w$Search,200);
+    //setInterval(w$Search,200);
 
     function w$Search(){
         if(model.search == ''){
