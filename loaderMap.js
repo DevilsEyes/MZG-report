@@ -3,7 +3,8 @@
  */
 
 require.config({
-    baseUrl: '/report/',
+    baseUrl: '/report/',  //网络路径
+    //baseUrl: '/MZG report/',//本机路径
     paths: {
         jquery: 'vendor/jquery/jquery.min.js',
         //avalon: "vendor/avalon/avalon",
@@ -15,6 +16,7 @@ require.config({
         SysUtil: 'config/SysUtil.js',
         SysValue: 'config/SysValue.js',
         jsonp: 'vendor/jsonp/jsonp.js',
+        layer: 'vendor/layer/layer.js',
         flatui: 'vendor/flat-ui/flat-ui.min.js',
         //loaderMap: './lib/loaderMap.js',
         userList: 'pages/userList/main.js',
@@ -40,7 +42,9 @@ require(['avalon',
     'login?20150716',
     'userInfo?20150716',
     'message?20150716',
-    'main?20150619'], function (avalon, mmRouter, userList, login, index) {
+    'main?20150619',
+    'layer?20150720',
+    "css!./static/css/skin/layer.css"], function (avalon, mmRouter, userList, login, index) {
 
     avalon.router.error(function () {
         require(["text!./static/template/404.html"], function (not_found) {

@@ -28,5 +28,5 @@ define(['avalon','mmRouter'], function(){
 
     avalon.scan(document.body);
     return model;
-});
 
+});

@@ -9,8 +9,7 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
         url: "#!/userList/"
     });
 
-    var by = function (name,s)
-    {
+    var by = function (name, s) {
         return function (o, p) {
             var a, b;
             if (typeof(o) === "object" && typeof(p) === "object" && o && p) {
@@ -20,17 +19,17 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
                     return 0;
                 }
                 if (typeof(a) === typeof(b)) {
-                    if(s==='0'){
-                        return a < b? -1 : 1;
-                    }else{
-                        return a < b? 1 : -1;
+                    if (s === '0') {
+                        return a < b ? -1 : 1;
+                    } else {
+                        return a < b ? 1 : -1;
                     }
                 }
-                if(s==='0'){
-                    return typeof(a) < typeof(b)? -1 : 1;
+                if (s === '0') {
+                    return typeof(a) < typeof(b) ? -1 : 1;
                 }
-                else{
-                    return typeof(a) < typeof(b)? 1 : -1;
+                else {
+                    return typeof(a) < typeof(b) ? 1 : -1;
                 }
             }
             else {
@@ -50,8 +49,9 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
         page: 1,
         limit: 20,
 
-        mySort:'storeId',
-        mySortF:'1',
+        mySort: 'storeId',
+        mySortF: '1',
+        search:'',
 
         fields: [{
             name: "#"
@@ -128,6 +128,9 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
             //    model.sort = sort;
             //else
             //    return;
+
+            layer.load(2);
+
             if (typeof (sort) == 'string')model.sort = sort;
             var formData = {order: [model.sort]};
             formData[model.sort] = {order: -1};
@@ -139,8 +142,9 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
                 success: function (data) {
                     var data = JSON.parse(data), ids = "";
                     SysUtil.ApiCallback(data);
-                    if (data.code != 0)
+                    if (data.code != 0) {
                         return alert(data.msg);
+                    }
                     model.androidNum = 0;
                     model.iosNum = 0;
                     data.data.list.forEach(function (item) {
@@ -148,26 +152,46 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
                         else model.androidNum++;
                     });
                     //window.wholeDatas = data.data.list;
-                    model.datas = data.data.list;
+
+                    model.wholeDatas = data.data.list;
+                    model.datas = model.wholeDatas;
+                    model.mySort = 'storeId';
+                    model.mySortF = '1';
+                    layer.closeAll('loading');
+
                     //model.datas = model.wholeDatas.slice(model.limit*model.page,model.limit*(model.page+1));
                 }
             });
-
-
         }
-
     });
     model.$watch("page", function (a) {
         avalon.scan(document);
     });
 
-    model.$watch("mySort",mySort);
-    model.$watch("mySortF",mySort);
-    function mySort(a) {
-        model.datas.sort(by(model.mySort,model.mySortF));
-        //model.datas = model.wholeDatas;
+    model.$watch("mySort", w$Sort);
+    model.$watch("mySortF", w$Sort);
+
+    function w$Sort(a) {
+        model.wholeDatas.sort(by(model.mySort, model.mySortF));
+        model.datas = model.wholeDatas;
         avalon.scan(document);
     }
+
+    model.$watch("search",w$Search);
+
+    function w$Search(){
+        if(model.search == ''){
+            model.datas = model.wholeDatas;
+            return;
+        }
+        for(var i=0;i<model.wholeDatas.size();i++){
+            if(model.wholeDatas[i].storeName == model.search){
+                model.datas = [model.wholeDatas[i]];
+                avalon.scan(document);
+                return;
+            }
+        }
+    };
 
     avalon.router.get("/userList/", function () {
         avalon.vmodels.root.bodyPage = "userList";

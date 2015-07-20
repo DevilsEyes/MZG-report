@@ -19,6 +19,14 @@
         <br/>
 
         <div class="input-group">
+            <label class="input-group-addon">用户名</label>
+            <input type="text" class="form-control" ms-duplex="search">
+        </div>
+        <input type="button" value="搜索" class="btn btn-default" ms-click="e$search"/>
+        <br/>
+        <br/>
+
+        <div class="input-group">
             <label class="input-group-addon">排序</label>
             <select class="form-control" ms-duplex="mySort">
                 <option value="storeId" selected>id</option>
@@ -70,5 +78,12 @@
         </tr>
         </tbody>
     </table>
-    第<input type="text" ms-duplex="page"/>页
+
+    <div class="form-group col-xs-3">
+        <div class="input-group">
+            <label class="input-group-addon">当前页码</label>
+            <input type="text" class="form-control" ms-duplex="page" placeholder="输入页码">
+            <div class="input-group-addon">共{{Math.round(datas.size()/limit +1)}}页</div>
+        </div>
+    </div>
 </div>
