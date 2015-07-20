@@ -109,7 +109,7 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
         getFormatTime: function (time) {
             model.dateFormat.setTime(time);
             return model.dateFormat.toLocaleString();//.format("yyyy-MM-dd HH:mm:ss");
-        },
+        }, 
 
         getReports: function (sort) {
             //if (model.sort === sort)
