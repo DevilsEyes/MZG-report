@@ -19,10 +19,9 @@
         <br/>
 
         <div class="input-group">
-            <label class="input-group-addon">用户名</label>
+            <label class="input-group-addon">按用户名搜索</label>
             <input type="text" class="form-control" ms-duplex="search">
         </div>
-        <input type="button" value="搜索" class="btn btn-default" ms-click="e$search"/>
         <br/>
         <br/>
 
@@ -58,7 +57,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ms-repeat-row="datas" ms-if-loop="$index >= (page-1)*limit && $index <= limit*page">
+        <tr ms-repeat-row="datas" ms-if-loop="$index >= (page-1)*limit && $index < limit*page">
             <td><a target='_blank' ms-attr-href="http://www.meizhanggui.cc/store/{{row.storeId}}">{{row.storeId}}</a>
             </td>
             <td><a ms-attr-href="#!/userInfo/{{row.storeId}}">{{row.storeName}}</a></td>

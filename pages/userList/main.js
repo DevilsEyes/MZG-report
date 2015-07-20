@@ -109,7 +109,7 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
         getFormatTime: function (time) {
             model.dateFormat.setTime(time);
             return model.dateFormat.toLocaleString();//.format("yyyy-MM-dd HH:mm:ss");
-        }, 
+        },
 
         getReports: function (sort) {
             //if (model.sort === sort)
@@ -153,8 +153,7 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
                     });
                     //window.wholeDatas = data.data.list;
 
-                    model.wholeDatas = data.data.list;
-                    model.datas = model.wholeDatas;
+                    model.datas = data.data.list;
                     model.mySort = 'storeId';
                     model.mySortF = '1';
                     layer.closeAll('loading');
@@ -172,25 +171,34 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
     model.$watch("mySortF", w$Sort);
 
     function w$Sort(a) {
-        model.wholeDatas.sort(by(model.mySort, model.mySortF));
-        model.datas = model.wholeDatas;
+        model.datas.sort(by(model.mySort, model.mySortF));
         avalon.scan(document);
     }
 
-    model.$watch("search",w$Search);
+    //model.$watch("search",w$Search);
+
+
+    setInterval(w$Search,200);
 
     function w$Search(){
         if(model.search == ''){
-            model.datas = model.wholeDatas;
+            model.limit = 20;
+            model.page = 1;
+            avalon.scan(document);
             return;
         }
-        for(var i=0;i<model.wholeDatas.size();i++){
-            if(model.wholeDatas[i].storeName == model.search){
-                model.datas = [model.wholeDatas[i]];
+        for(var i=0;i<model.datas.size();i++){
+            if(model.datas[i].storeName == model.search){
+                model.limit = 1;
+                model.page = i+1;
                 avalon.scan(document);
                 return;
             }
         }
+        model.limit = 20;
+        model.page = 1;
+        avalon.scan(document);
+        return;
     };
 
     avalon.router.get("/userList/", function () {
