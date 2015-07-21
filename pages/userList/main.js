@@ -161,6 +161,19 @@ define(["avalon", 'mmRouter', "text!/template/userList.html", "SysConfig", 'SysU
                     //model.datas = model.wholeDatas.slice(model.limit*model.page,model.limit*(model.page+1));
                 }
             });
+        },
+
+        e$pageTurn:function($event,k){
+            var i = parseInt(model.page);
+            var max = Math.round(model.datas.size()/model.limit) +1;
+            i = i + k;
+            if(i<1){
+                i=1
+            }
+            else if(i>max){
+                i=max;
+            }
+            model.page = i;
         }
     });
     model.$watch("page", function (a) {

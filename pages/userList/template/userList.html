@@ -78,11 +78,13 @@
         </tbody>
     </table>
 
-    <div class="form-group col-xs-3">
-        <div class="input-group">
+    <div class="form-inline">
+        <input type="button" value="上一页" class="btn btn-default" ms-click="e$pageTurn($event,-1)"/>
+        <div class="input-group  col-xs-3">
             <label class="input-group-addon">当前页码</label>
             <input type="text" class="form-control" ms-duplex="page" placeholder="输入页码">
             <div class="input-group-addon">共{{Math.round(datas.size()/limit +1)}}页</div>
         </div>
+        <input type="button" value="下一页" class="btn btn-default" ms-click="e$pageTurn($event,1)"/>
     </div>
 </div>
