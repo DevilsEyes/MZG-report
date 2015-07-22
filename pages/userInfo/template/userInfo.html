@@ -2,17 +2,21 @@
 <div ms-controller="userInfo">
 
     <div class="form-inline">
-        <div class="input-group">
+        <div class="input-group col-sm-3">
             <label class="input-group-addon">用户Id</label>
-            <input type="text" class="form-control" ms-duplex="storeId">
+            <input type="text" class="form-control" ms-duplex="s$storeId">
         </div>
 
-        <div class="input-group">
+        <input class="btn btn-primary" type="button" ms-click="getInfo($event,1)" value="搜索"/>
+
+        <br/><br/>
+
+        <div class="input-group col-sm-3">
             <label class="input-group-addon">手机号</label>
-            <input type="text" class="form-control" ms-duplex="phonenum">
+            <input type="text" class="form-control" ms-duplex="s$phonenum">
         </div>
 
-        <input class="btn btn-primary" type="button" ms-click="getInfo" value="搜索"/>
+        <input class="btn btn-primary" type="button" ms-click="getInfo($event,2)" value="搜索"/>
         <br/>
         <hr/>
         <br/>
@@ -85,7 +89,7 @@
 
         <div class="form-group">
             <label class="col-sm-2 control-label">权限</label>
-            <select class="col-sm-7 form-control" style="width:200px;margin-right:10px;" ms-duplex="role">
+            <select class="col-sm-7 form-control" style="width:200px;margin-right:10px;" ms-duplex="userInfo.role">
                 <option value="0">普通用户</option>
                 <option value="110">普通管理员</option>
                 <option value="120">超级管理员</option>
@@ -95,7 +99,7 @@
 
         <div class="form-group">
             <label class="col-sm-2 control-label">行业</label>
-            <select class="col-sm-7 form-control" style="width:200px;margin-right:10px;" ms-duplex="sector">
+            <select class="col-sm-7 form-control" style="width:200px;margin-right:10px;" ms-duplex="userInfo.sector">
                 <option value="0">爱好</option>
                 <option value="10">美甲</option>
                 <option value="20">美发</option>
@@ -109,13 +113,13 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">店铺地址</label>
 
-            <p class="col-sm-10 form-control-static">{{userInfo.company.address|f$null}}</p>
+            <p class="col-sm-10 form-control-static">{{userInfo.company_address|f$null}}</p>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">店铺名称</label>
 
-            <p class="col-sm-10 form-control-static">{{userInfo.company.name|f$null}}</p>
+            <p class="col-sm-10 form-control-static">{{userInfo.company_name|f$null}}</p>
         </div>
 
 

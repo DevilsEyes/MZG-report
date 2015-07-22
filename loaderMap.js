@@ -58,5 +58,3 @@ require(['avalon',
     avalon.scan(document.body);
 });
 //});
-
-

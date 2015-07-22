@@ -50,17 +50,24 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
     var model = avalon.define({
         $id: "userInfo",
 
+        s$storeId:'',
+        s$phonenum:'',
+
         storeId:'',
         phonenum:'',
         sector:'',
         role:'',
         storeInfo:'',
         userInfo:{},
-        getInfo: function () {
+        getInfo: function ($event,mod) {
             var formData = {};
-            if(model.storeId.length>0)
-                formData['storeId'] = model.storeId;
-            else formData['phonenum'] = model.phonenum;
+            formData['storeId'] = model.storeId;
+            if(mod==1){
+                formData['storeId'] = model.s$storeId;
+            }
+            else if(mod==2){
+                formData['phonenum'] = model.s$phonenum;
+            }
             formData['full'] = true;
             $.jsonp({
                 url: SysConfig.ApiUrl+"V1.0.0/Store/info",
@@ -76,10 +83,14 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
 
                     model.userInfo = userInfo.userInfo;
                     //model.userInfo = $.extend({},userInfo,userInfo.userInfo);
-                    model.userInfo.company_name = userInfo.userInfo.company.name;
-                    model.userInfo.company_address = userInfo.userInfo.company.address;
-
-                    console.dir(model.userInfo);
+                    if(typeof(userInfo.userInfo.company)!='undefiend'&&userInfo.userInfo.company>0){
+                        model.userInfo.company_name = userInfo.userInfo.company.name;
+                        model.userInfo.company_address = userInfo.userInfo.company.address;
+                    }
+                    else{
+                        model.userInfo.company_name = '';
+                        model.userInfo.company_address = '';
+                    }
 
                     model.sector = userInfo.sector;
                     model.phonenum = userInfo.userInfo.phonenum;
