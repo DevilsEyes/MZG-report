@@ -113,7 +113,7 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
         {
             var formData = {};
             formData['userId'] = model.storeId;
-            formData['sector'] = model.sector;
+            formData['sector'] = model.userInfo.sector;
             $.jsonp({
                 url: SysConfig.ApiUrl+"V1.0.0/Admin/userInfo?_method=POST",
                 callbackParameter:"callback",
@@ -131,7 +131,7 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
         {
             var formData = {};
             formData['userId'] = model.storeId;
-            formData['role'] = model.role;
+            formData['role'] = model.userInfo.role;
             $.jsonp({
                 url: SysConfig.ApiUrl+"V1.0.0/Admin/userInfo?_method=POST",
                 callbackParameter:"callback",
