@@ -3,8 +3,8 @@
  */
 
 require.config({
-    baseUrl: '/report/',  //网络路径
-    //baseUrl: '/MZG report/',//本机路径
+    //baseUrl: '/report/',  //网络路径
+    baseUrl: '/MZG report/',//本机路径
     paths: {
         jquery: 'vendor/jquery/jquery.min.js',
         //avalon: "vendor/avalon/avalon",

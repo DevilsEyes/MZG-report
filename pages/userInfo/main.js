@@ -79,10 +79,15 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
                     if (data.code != 0)
                     {return alert(data.msg);}
 
+                    model.storeId = data.data.storeInfo.storeId;
+                    if(!location.hash.match(model.storeId+'')){
+                        location.hash = '#!/userInfo/' + model.storeId;
+                    }
+
                     var userInfo = data.data.storeInfo,str="";
 
                     model.userInfo = userInfo.userInfo;
-                    //model.userInfo = $.extend({},userInfo,userInfo.userInfo);
+
                     if(typeof(userInfo.userInfo.company)!='undefiend'&&userInfo.userInfo.company>0){
                         model.userInfo.company_name = userInfo.userInfo.company.name;
                         model.userInfo.company_address = userInfo.userInfo.company.address;
@@ -120,6 +125,9 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
                 data:formData,
                 success:function(data){
                     var data = JSON.parse(data);
+
+                    console.dir(data);
+
                     SysUtil.ApiCallback(data);
                     if(data.code!=0)
                         return alert(data.msg);
@@ -138,6 +146,7 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
                 data:formData,
                 success:function(data){
                     var data = JSON.parse(data);
+
                     SysUtil.ApiCallback(data);
                     if(data.code!=0)
                         return alert(data.msg);
