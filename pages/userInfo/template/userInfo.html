@@ -18,31 +18,19 @@
 
         <input class="btn btn-primary" type="button" ms-click="getInfo($event,2)" value="搜索"/>
         <br/>
-        <hr/>
         <br/>
     </div>
 
     <div class="form-horizontal">
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">头像</label>
-
-            <div class="col-sm-10" ms-if="userInfo.avatar.length > 0 ">
-                <img class="cimg-circle" ms-src="{{userInfo.avatar + '?imageView2/2/w/80/h/80'}}"/>
-            </div>
-            <p class="col-sm-10 form-control-static" ms-if="userInfo.avatar.length == 0 ">无</p>
-        </div>
+        <hr/>
+        <h3 class="col-sm-12">帐号信息</h3>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">ID</label>
 
-            <p class="col-sm-10 form-control-static"><a target='_blank' ms-attr-href="http://www.meizhanggui.cc/store/{{userInfo.userId}}">{{userInfo.userId}}</a></p>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">用户名</label>
-
-            <p class="col-sm-10 form-control-static">{{userInfo.nickname}}</p>
+            <p class="col-sm-10 form-control-static"><a target='_blank'
+                                                        ms-attr-href="http://www.meizhanggui.cc/store/{{userInfo.userId}}">{{userInfo.userId}}</a>
+            </p>
         </div>
 
         <div class="form-group">
@@ -52,39 +40,9 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">生日</label>
-
-            <p class="col-sm-10 form-control-static">{{userInfo.birthYear + '.' + userInfo.birthMonth + '.' + userInfo.birthDay|f$null}}</p>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">性别</label>
-
-            <p class="col-sm-10 form-control-static">{{userInfo.gender|f$gender}}</p>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">简介</label>
-
-            <p class="col-sm-10 form-control-static">{{userInfo.faith|f$null}}</p>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">账号状态</label>
-
-            <p class="col-sm-10 form-control-static">{{userInfo.banned|f$banned}}</p>
-        </div>
-
-        <div class="form-group">
             <label class="col-sm-2 control-label">微信号</label>
 
             <p class="col-sm-10 form-control-static">{{userInfo.wxNum|f$null}}</p>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">openId(微信)</label>
-
-            <p class="col-sm-10 form-control-static">{{userInfo.wxOpenId|f$null}}</p>
         </div>
 
         <div class="form-group">
@@ -111,18 +69,46 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">店铺地址</label>
+            <label class="col-sm-2 control-label">账号状态</label>
 
-            <p class="col-sm-10 form-control-static">{{userInfo.company_address|f$null}}</p>
+            <select class="col-sm-10 form-control" style="width:200px;margin-right:10px;" ms-duplex="userInfo.banned"
+                    disabled>
+                <option value="0">正常</option>
+                <option value="1">封七天</option>
+                <option value="2">封永久</option>
+            </select>
+
+            <input class="btn btn-danger" type="button" ms-if="userInfo.banned!=1" ms-click="ChangeBan($event,1)" value="封七天"/>
+            <input class="btn btn-danger" type="button" ms-if="userInfo.banned!=2" ms-click="ChangeBan($event,2)" value="封永久"/>
+            <input class="btn btn-danger" type="button" ms-if="userInfo.banned!=0" ms-click="ChangeBan($event,0)" value="解封"/>
+
+        </div>
+    </div>
+
+    <div class="form-inline">
+        <hr/>
+        <h3>详细信息</h3>
+
+        <div class="col-sm-2 text-right">头像</div>
+        <div class="col-sm-10">
+            <img class="img-circle" ms-if="userInfo.avatar" ms-src="{{userInfo.avatar + '?imageView2/2/w/80/h/80'}}"/>
+            <span ms-if="userInfo.avatar==''">无</span>
+            <br/><br/>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">店铺名称</label>
-
-            <p class="col-sm-10 form-control-static">{{userInfo.company_name|f$null}}</p>
-        </div>
-
-
-        <!--{{storeInfo|html}}-->
+        <div class="col-sm-2 text-right">用户名</div>
+        <div class="col-sm-10">{{userInfo.nickname}}<br/><br/></div>
+        <div class="col-sm-2 text-right">生日</div>
+        <div class="col-sm-10">{{userInfo.birthYear + '.' + userInfo.birthMonth + '.' + userInfo.birthDay|f$null}}<br/><br/></div>
+        <div class="col-sm-2 text-right">性别</div>
+        <div class="col-sm-10">{{userInfo.gender|f$gender}}<br/><br/></div>
+        <div class="col-sm-2 text-right">简介</div>
+        <div class="col-sm-10">{{userInfo.faith|f$null}}<br/><br/></div>
+        <div class="col-sm-2 text-right">openId(微信)</div>
+        <div class="col-sm-10">{{userInfo.wxOpenId|f$null}}<br/><br/></div>
+        <div class="col-sm-2 text-right">店铺地址</div>
+        <div class="col-sm-10">{{userInfo.company_address|f$null}}<br/><br/></div>
+        <div class="col-sm-2 text-right">店铺名称</div>
+        <div class="col-sm-10">{{userInfo.company_name|f$null}}<br/><br/></div>
     </div>
 </div>

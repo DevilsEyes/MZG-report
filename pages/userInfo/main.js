@@ -1,46 +1,46 @@
 /**
  * Created by nic on 2015/6/10.
  */
-define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil'], function(avalon,router, userInfo,SysConfig,SysUtil) {
+define(["avalon", 'mmRouter', "text!/template/userInfo.html", "SysConfig", 'SysUtil'], function (avalon, router, userInfo, SysConfig, SysUtil) {
     avalon.templateCache.userInfo = userInfo;
 
     avalon.vmodels.root.menus.push({
-            title: "用户信息",
-            url: "#!/userInfo/"
-        });
+        title: "用户信息",
+        url: "#!/userInfo/"
+    });
 
-    avalon.filters.f$gender = function(str){
-        if(str == '1'){
+    avalon.filters.f$gender = function (str) {
+        if (str == '1') {
             return '男';
-        }else if(str == '0'){
+        } else if (str == '0') {
             return '女';
-        }else{
+        } else {
             return '未知';
         }
     };
-    avalon.filters.f$null = function(str){
-        if(str == null||str == '0.1.1'||str==''){
+    avalon.filters.f$null = function (str) {
+        if (str == null || str == '0.1.1' || str == '') {
             return '无';
         }
-        else{
+        else {
             return str;
         }
     };
-    avalon.filters.f$role = function(str){
-        if(str == '120'){
+    avalon.filters.f$role = function (str) {
+        if (str == '120') {
             return '超级管理员';
-        }else if(str == '110'){
+        } else if (str == '110') {
             return '普通管理员';
-        }else{
+        } else {
             return '普通用户';
         }
     };
-    avalon.filters.f$banned = function(str){
-        if(str == '2'){
+    avalon.filters.f$banned = function (str) {
+        if (str == '2') {
             return '永久封号';
-        }else if(str == '1'){
+        } else if (str == '1') {
             return '封号七天';
-        }else{
+        } else {
             return '正常';
         }
     };
@@ -50,49 +50,50 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
     var model = avalon.define({
         $id: "userInfo",
 
-        s$storeId:'',
-        s$phonenum:'',
+        s$storeId: '',
+        s$phonenum: '',
 
-        storeId:'',
-        phonenum:'',
-        sector:'',
-        role:'',
-        storeInfo:'',
-        userInfo:{},
-        getInfo: function ($event,mod) {
+        storeId: '',
+        phonenum: '',
+        sector: '',
+        role: '',
+        storeInfo: '',
+        userInfo: {},
+        getInfo: function ($event, mod) {
             var formData = {};
             formData['storeId'] = model.storeId;
-            if(mod==1){
+            if (mod == 1) {
                 formData['storeId'] = model.s$storeId;
             }
-            else if(mod==2){
+            else if (mod == 2) {
                 formData['phonenum'] = model.s$phonenum;
             }
             formData['full'] = true;
             $.jsonp({
-                url: SysConfig.ApiUrl+"V1.0.0/Store/info",
+                url: SysConfig.ApiUrl + "V1.0.0/Store/info",
                 callbackParameter: "callback",
                 data: formData,
                 success: function (data) {
                     var data = JSON.parse(data);
                     SysUtil.ApiCallback(data);
-                    if (data.code != 0)
-                    {return alert(data.msg);}
+                    if (data.code != 0) {
+                        return alert(data.msg);
+                    }
 
                     model.storeId = data.data.storeInfo.storeId;
-                    if(!location.hash.match(model.storeId+'')){
+                    if (!location.hash.match(model.storeId + '')) {
                         location.hash = '#!/userInfo/' + model.storeId;
                     }
 
-                    var userInfo = data.data.storeInfo,str="";
+                    var userInfo = data.data.storeInfo, str = "";
 
                     model.userInfo = userInfo.userInfo;
 
-                    if(typeof(userInfo.userInfo.company)!='undefiend'&&userInfo.userInfo.company>0){
+                    if (typeof(userInfo.userInfo.company) != 'undefiend' && userInfo.userInfo.company > 0) {
                         model.userInfo.company_name = userInfo.userInfo.company.name;
                         model.userInfo.company_address = userInfo.userInfo.company.address;
                     }
-                    else{
+                    else {
                         model.userInfo.company_name = '';
                         model.userInfo.company_address = '';
                     }
@@ -100,70 +101,110 @@ define(["avalon",'mmRouter', "text!/template/userInfo.html","SysConfig",'SysUtil
                     model.sector = userInfo.sector;
                     model.phonenum = userInfo.userInfo.phonenum;
                     model.role = userInfo.userInfo.role;
-                    for(var i in userInfo)
-                    {
-                        if(typeof userInfo[i]=='object')
-                        {
-                            for(var j in userInfo[i])
-                                str+=j+': '+userInfo[i][j]+'<br/>';
+                    for (var i in userInfo) {
+                        if (typeof userInfo[i] == 'object') {
+                            for (var j in userInfo[i])
+                                str += j + ': ' + userInfo[i][j] + '<br/>';
                         }
                         else
-                            str+=i+': '+userInfo[i]+'<br/>';
+                            str += i + ': ' + userInfo[i] + '<br/>';
                     }
                     model.storeInfo = str;
                 }
             });
         },
-        ChangeSector:function()
-        {
+        ChangeSector: function () {
             var formData = {};
             formData['userId'] = model.storeId;
             formData['sector'] = model.userInfo.sector;
             $.jsonp({
-                url: SysConfig.ApiUrl+"V1.0.0/Admin/userInfo?_method=POST",
-                callbackParameter:"callback",
-                data:formData,
-                success:function(data){
+                url: SysConfig.ApiUrl + "V1.0.0/Admin/userInfo?_method=POST",
+                callbackParameter: "callback",
+                data: formData,
+                success: function (data) {
                     var data = JSON.parse(data);
 
                     console.dir(data);
 
                     SysUtil.ApiCallback(data);
-                    if(data.code!=0)
+                    if (data.code != 0)
                         return alert(data.msg);
                     else return alert('修改成功');
                 }
             });
         },
-        ChangeRole:function()
-        {
+        ChangeRole: function () {
             var formData = {};
             formData['userId'] = model.storeId;
             formData['role'] = model.userInfo.role;
             $.jsonp({
-                url: SysConfig.ApiUrl+"V1.0.0/Admin/userInfo?_method=POST",
-                callbackParameter:"callback",
-                data:formData,
-                success:function(data){
+                url: SysConfig.ApiUrl + "V1.0.0/Admin/userInfo?_method=POST",
+                callbackParameter: "callback",
+                data: formData,
+                success: function (data) {
                     var data = JSON.parse(data);
 
                     SysUtil.ApiCallback(data);
-                    if(data.code!=0)
+                    if (data.code != 0)
                         return alert(data.msg);
                     else return alert('修改成功');
                 }
             });
+        },
+        ChangeBan: function ($event, mod) {
+
+            layer.msg('这个接口暂时还不能用哦~！');
+
+            //var str = '';
+            //
+            //switch (mod) {
+            //    case 0:
+            //        str = '确定要为该用户解封吗？';
+            //        break;
+            //    case 1:
+            //        str = '确定封停该用户七天吗？';
+            //        break;
+            //    case 2:
+            //        str = '确定永久封停该用户吗？';
+            //        break;
+            //}
+            //
+            //layer.confirm(
+            //    str,
+            //    {
+            //        btn: ['确定', '取消'], //按钮
+            //        shade: 0.3
+            //    },
+            //    function () {
+            //        $.jsonp({
+            //            url: "http://api.meizhanggui.cc:3366/users/banUser/?_method=POST",
+            //            callbackParameter: "callback",
+            //            data: {
+            //                user_id: model.storeId,
+            //                type: mod
+            //            },
+            //            success:function(data){
+            //                var data = JSON.parse(data);
+            //                console.dir(data);
+            //            },
+            //            error:function(){
+            //                console.log('连接失败');
+            //            }
+            //        })
+            //    },
+            //    function () {
+            //    }
+            //);
         }
-
     });
 
-    avalon.router.get("/userInfo/", function(){
+    avalon.router.get("/userInfo/", function () {
         avalon.vmodels.root.bodyPage = "userInfo";
     });
 
-    avalon.router.get("/userInfo/:id", function(){
+    avalon.router.get("/userInfo/:id", function () {
         avalon.vmodels.root.bodyPage = "userInfo";
-        model.storeId = this.params.id+"";
+        model.storeId = this.params.id + "";
         model.getInfo();
     });
 

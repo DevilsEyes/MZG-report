@@ -1,7 +1,18 @@
 <h1 class="page-header">登录</h1>
 <div  ms-controller="login">
-    账号：<input id="account" type="text" ms-duplex="account"/>
-    <br/>密码：<input id="password" type="password" ms-duplex="password"/>
+
+    <div class="input-group col-lg-3">
+        <label class="input-group-addon">账号</label>
+        <input id="account" type="text" class="form-control" ms-duplex="account" placeholder="输入账号">
+    </div>
     <br/>
-    <input type="button" value="登录" ms-click="login"/>
+    <div class="input-group col-lg-3">
+        <label class="input-group-addon">密码</label>
+        <input id="password" type="text" class="form-control" ms-duplex="password" placeholder="输入密码">
+    </div>
+    <br/>
+    <div class="input-group">
+        <input class="btn btn-primary" type="button" value="登录" ms-click="login"/>
+    </div>
+
 </div>
