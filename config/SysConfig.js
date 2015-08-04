@@ -4,7 +4,7 @@
 define(function(){
 
     return {
-        ApiUrl:'http://api.meizhanggui.cc/'
-        //ApiUrl:'http://123.57.42.13/'
+        //ApiUrl:'http://api.meizhanggui.cc/'
+        ApiUrl:'http://123.57.42.13/'
     };
 });

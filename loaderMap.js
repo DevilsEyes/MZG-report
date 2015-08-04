@@ -3,8 +3,8 @@
  */
 
 require.config({
-    baseUrl: '/report/',  //网络路径
-    //baseUrl: '/MZG report/',//本机路径
+    //baseUrl: '/report/',  //网络路径
+    baseUrl: '/MZG report/',//本机路径
     paths: {
         jquery: 'vendor/jquery/jquery.min.js',
         //avalon: "vendor/avalon/avalon",
@@ -17,11 +17,12 @@ require.config({
         SysValue: 'config/SysValue.js',
         jsonp: 'vendor/jsonp/jsonp.js',
         layer: 'vendor/layer/layer.js',
-        flatui: 'vendor/flat-ui/flat-ui.min.js',
+        //flatui: 'vendor/flat-ui/flat-ui.min.js',
         //loaderMap: './lib/loaderMap.js',
         userList: 'pages/userList/main.js',
         login: 'pages/login/main.js',
         userInfo: 'pages/userInfo/main.js',
+        drawBillList: 'pages/drawBillList/main.js',
         message: 'pages/message/main.js'
     },
     priority: ['text', 'css'],
@@ -41,6 +42,7 @@ require(['avalon',
     'userList?20150716',
     'login?20150716',
     'userInfo?20150716',
+    'drawBillList?20150804',
     'message?20150716',
     'main?20150619',
     'layer?20150720',

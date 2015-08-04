@@ -1,0 +1,45 @@
+<h1 class="page-header">报表</h1>
+<div ms-controller="drawBillList">
+
+    <div class="form-inline">
+
+        <input type="button" value="刷新" class="btn btn-default" ms-click="getBillList($event,page)"/>
+        <hr>
+
+    </div>
+    <table class="table table-striped text-center">
+        <thead>
+        <tr>
+            <th class="store_field_tab col-xs-3 text-center">店铺id</th>
+            <th class="store_field_tab col-xs-3 text-center">提款金额</th>
+            <th class="store_field_tab col-xs-2 text-center">状态</th>
+            <th class="store_field_tab col-xs-4 text-center">处理</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ms-repeat-row="billList">
+            <!--<td><a ms-attr-href="#!/userInfo/{{row.storeId}}">{{row.storeName}}</a></td>-->
+            <td>{{row.storeId}}</td>
+            <td>{{row.amount|f$current}}</td>
+            <td>{{row.status|f$drawBillStatus}}</td>
+            <td>
+                <input type="button" value="确认" class="btn btn-success" ms-click="e$Click($event,$index,0)"/>
+                <input type="button" value="取消" class="btn btn-default" ms-click="e$Click($event,$index,30)"/>
+                <input type="button" value="恶意" class="btn btn-default" ms-click="e$Click($event,$index,50)"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr>
+
+    <div class="form-inline">
+        <input type="button" value="上一页" class="btn btn-default" ms-visible="page>1" ms-click="getBillList($event,page-1)"/>
+        <div class="input-group  col-xs-3">
+            <label class="input-group-addon">当前页码</label>
+            <input type="tel" class="form-control" ms-duplex="page" placeholder="输入页码">
+            <div class="input-group-addon">共{{Maxpage+1}}页</div>
+        </div>
+        <input type="button" value="下一页" class="btn btn-default" ms-visible="page<=Maxpage" ms-click="getBillList($event,page+1)"/>
+    </div>
+</div>

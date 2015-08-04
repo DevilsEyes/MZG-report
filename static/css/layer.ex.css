@@ -1,0 +1,74 @@
+body .mySkin .layui-layer{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    padding: 0;
+    width: 200px;
+}
+
+/*body .mySkin .layui-layer-title {*/
+    /*border-radius: 4px 4px 0 0;*/
+    /*background-color: #6f5f5c;*/
+    /*color:#f0e9dc;*/
+    /*width: 100%;*/
+    /*padding: 0;*/
+    /*text-align: center;*/
+    /*border: none;*/
+/*}*/
+
+body .mySkin .layui-layer-content{
+    text-align: center;
+    padding: 0 30px 10px 30px;
+    background-color: #f6f6f6;
+    border-radius: 4px 4px 0 0;
+}
+
+body .mySkin .layui-layer-content h1{
+    font-family: '微软雅黑',sans-serif;
+    font-size: 18px;
+    padding: 10px;
+}
+
+body .mySkin .layui-layer-content h2{
+    padding: 10px;
+}
+
+body .mySkin .layui-layer-content p{
+    color: #aaa;
+}
+
+body .mySkin .layui-layer-btn{
+    background-color: #f6f6f6;
+    border-radius: 0 0 4px 4px ;
+    margin:0;
+    padding: 0 0 20px 0;
+}
+
+body .mySkin .layui-layer-btn>a{
+    border-radius: 4px;
+    font-weight: normal;
+    text-align: center;
+}
+
+body .mySkin .layui-layer-btn>a:hover{
+    box-shadow: 999px 0 0 0 rgba(255,255,255,0.2) inset;
+}
+
+body .mySkin .layui-layer-btn0{
+    border: solid 1px #aaaaaa;
+    color: white;
+    background-color: rgb(68,157,68);
+}
+
+body .mySkin .layui-layer-btn0:hover{
+    color: white;
+}
+
+body .mySkin .layui-layer-btn1{
+    border: solid 1px #aaaaaa;
+    color: #444444;
+    background-color: rgb(220,220,220);
+}
+
+body .mySkin .layui-layer-btn1:hover{
+    color: #444444;
+}
